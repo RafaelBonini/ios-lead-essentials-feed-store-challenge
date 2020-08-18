@@ -16,6 +16,7 @@
 		08CE2BB22285BCE700183A1B /* XCTestCase+FailableDeleteFeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE2BAD2285BCE700183A1B /* XCTestCase+FailableDeleteFeedStoreSpecs.swift */; };
 		08CE2BB32285BCE700183A1B /* XCTestCase+FailableInsertFeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE2BAE2285BCE700183A1B /* XCTestCase+FailableInsertFeedStoreSpecs.swift */; };
 		08CE2BB52285BEF100183A1B /* FeedStoreChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */; };
+		5FE6A24124EC866B0094B879 /* RealmFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE6A24024EC866B0094B879 /* RealmFeedStore.swift */; };
 		80E05733B983DF271C0120D5 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 746C2FD83332B96DC3C7B145 /* libPods-Tests.a */; };
 		9C122BA9BA32B8C438B65A72 /* libPods-FeedStoreChallenge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AFB295EB492C0B9F67DE756 /* libPods-FeedStoreChallenge.a */; };
 /* End PBXBuildFile section */
@@ -46,6 +47,7 @@
 		08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreChallengeTests.swift; sourceTree = "<group>"; };
 		3DC44038C9D97477CCE5512C /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		5AFB295EB492C0B9F67DE756 /* libPods-FeedStoreChallenge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FeedStoreChallenge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FE6A24024EC866B0094B879 /* RealmFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmFeedStore.swift; sourceTree = "<group>"; };
 		746C2FD83332B96DC3C7B145 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D25FC110C13453AE0621F5A /* Pods-FeedStoreChallenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedStoreChallenge.release.xcconfig"; path = "Target Support Files/Pods-FeedStoreChallenge/Pods-FeedStoreChallenge.release.xcconfig"; sourceTree = "<group>"; };
 		901EA9742578636A7B5937A0 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			children = (
 				08CE2BA72285BCC600183A1B /* LocalFeedImage.swift */,
 				08CE2BA52285BCB600183A1B /* FeedStore.swift */,
+				5FE6A24024EC866B0094B879 /* RealmFeedStore.swift */,
 				08CE2B8F2285BBD100183A1B /* Info.plist */,
 			);
 			path = FeedStoreChallenge;
@@ -304,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08CE2BA62285BCB600183A1B /* FeedStore.swift in Sources */,
+				5FE6A24124EC866B0094B879 /* RealmFeedStore.swift in Sources */,
 				08CE2BA82285BCC600183A1B /* LocalFeedImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
