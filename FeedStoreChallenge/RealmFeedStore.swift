@@ -33,6 +33,7 @@ public class RealmFeedStore: FeedStore {
         let realmCache = Cache(feedImage: realmFeed, timestamp: timestamp)
         
         try! realm.write {
+            realm.deleteAll()
             realm.add(realmCache)
         }
         
