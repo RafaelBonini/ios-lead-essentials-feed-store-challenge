@@ -12,6 +12,22 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
 //   Uncomment the test implementations one by one.
 // 	 Follow the process: Make the test pass, commit, and move to the next one.
 //
+    
+    override func setUp() {
+        super.setUp()
+        let sut = makeSUT()
+        let exp = expectation(description: "wait completion")
+        sut.deleteCachedFeed { _ in exp.fulfill()}
+        wait(for: [exp], timeout: 1.0)
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        let sut = makeSUT()
+        let exp = expectation(description: "wait completion")
+        sut.deleteCachedFeed { _ in exp.fulfill()}
+        wait(for: [exp], timeout: 1.0)
+    }
 
 	func test_retrieve_deliversEmptyOnEmptyCache() {
 		let sut = makeSUT()
@@ -98,8 +114,6 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
                                                         appropriateFor: nil, create: false)
         let url = documentDirectory.appendingPathComponent("\(type(of: self)).store")
         return url
-        
-//        return Bundle.main.url(forResource: "MyBundledData", withExtension: "realm")?.deletingLastPathComponent().appendingPathComponent("\(type(of: self)).store")
     }
 	
 }

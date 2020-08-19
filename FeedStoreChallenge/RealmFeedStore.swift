@@ -22,7 +22,6 @@ public class RealmFeedStore: FeedStore {
     }
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        
     }
     
     public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
@@ -37,7 +36,17 @@ public class RealmFeedStore: FeedStore {
     }
     
     public func retrieve(completion: @escaping RetrievalCompletion) {
-        completion(.empty)
+        if let savedCache = realm.objects(Cache.self).first {
+            
+            if let cacheToLocalFeed = savedCache.localFeed {
+                completion(.found(feed: cacheToLocalFeed, timestamp: savedCache.timestamp ?? Date()))
+            } else {
+                completion(.failure(Error.invalidData))
+            }
+            
+        } else {
+            completion(.empty)
+        }
     }
 }
 
@@ -49,6 +58,21 @@ class Cache: Object {
         self.init()
         self.timestamp = timestamp
         self.feedImage.append(objectsIn: feedImage)
+    }
+    
+    var localFeed: [LocalFeedImage]? {
+        var feed = [LocalFeedImage]()
+        feedImage.forEach {
+            feed.append(
+                LocalFeedImage(
+                    id: UUID(uuidString: $0.id ?? "") ?? UUID(),
+                    description: $0.desc ?? "",
+                    location: $0.location ?? "",
+                    url: URL(string: $0.url ?? "")!
+                )
+            )
+        }
+        return feed
     }
 }
 
@@ -65,4 +89,8 @@ class RealmFeedImage: Object {
         location = localFeed.location
         url = localFeed.url.absoluteString
     }
+}
+
+public enum Error: Swift.Error {
+    case invalidData
 }
