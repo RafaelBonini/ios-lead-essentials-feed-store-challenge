@@ -88,10 +88,19 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
 	// - MARK: Helpers
 	
 	private func makeSUT() -> FeedStore {
-        let sut = RealmFeedStore()
+        let sut = RealmFeedStore(fileURLz: testSpecificStoreUrl())
         
         return sut
 	}
+    
+    private func testSpecificStoreUrl() -> URL? {
+        let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
+                                                        appropriateFor: nil, create: false)
+        let url = documentDirectory.appendingPathComponent("\(type(of: self)).store")
+        return url
+        
+//        return Bundle.main.url(forResource: "MyBundledData", withExtension: "realm")?.deletingLastPathComponent().appendingPathComponent("\(type(of: self)).store")
+    }
 	
 }
 
