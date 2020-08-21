@@ -104,7 +104,7 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
 	// - MARK: Helpers
 	
 	private func makeSUT() -> FeedStore {
-        let sut = try! RealmFeedStore(fileURLz: testSpecificStoreUrl())
+        let sut = try! RealmFeedStore(fileURL: testSpecificStoreUrl())
         
         return sut
 	}

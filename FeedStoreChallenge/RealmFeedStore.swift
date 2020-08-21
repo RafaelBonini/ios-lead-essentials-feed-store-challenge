@@ -13,9 +13,9 @@ public class RealmFeedStore: FeedStore {
     
     private let realm: Realm
     
-    public init(fileURLz: URL?) throws {
+    public init(fileURL: URL?) throws {
         let config = Realm.Configuration(
-            fileURL: fileURLz
+            fileURL: fileURL
         )
         
         realm = try Realm(configuration: config)
