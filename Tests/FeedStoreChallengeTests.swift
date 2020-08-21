@@ -15,18 +15,12 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
     
     override func setUp() {
         super.setUp()
-        let sut = makeSUT()
-        let exp = expectation(description: "wait completion")
-        sut.deleteCachedFeed { _ in exp.fulfill()}
-        wait(for: [exp], timeout: 1.0)
+        setEmptyCacheState()
     }
     
     override func tearDown() {
         super.tearDown()
-        let sut = makeSUT()
-        let exp = expectation(description: "wait completion")
-        sut.deleteCachedFeed { _ in exp.fulfill()}
-        wait(for: [exp], timeout: 1.0)
+        undoSideEffects()
     }
 
 	func test_retrieve_deliversEmptyOnEmptyCache() {
@@ -103,11 +97,25 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
 	
 	// - MARK: Helpers
 	
-	private func makeSUT() -> FeedStore {
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> FeedStore {
         let sut = try! RealmFeedStore(fileURL: testSpecificStoreUrl())
-        
         return sut
 	}
+    
+    private func setEmptyCacheState() {
+        deleteCachedArtifacts()
+    }
+    
+    private func undoSideEffects() {
+        deleteCachedArtifacts()
+    }
+    
+    private func deleteCachedArtifacts() {
+        let sut = makeSUT()
+        let exp = expectation(description: "wait completion")
+        sut.deleteCachedFeed { _ in exp.fulfill()}
+        wait(for: [exp], timeout: 1.0)
+    }
     
     private func testSpecificStoreUrl() -> URL? {
         let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
@@ -115,7 +123,12 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
         let url = documentDirectory.appendingPathComponent("\(type(of: self)).store")
         return url
     }
-	
+    
+    func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
+         addTeardownBlock { [weak instance] in
+             XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
+         }
+     }
 }
 
 //
