@@ -43,12 +43,7 @@ public class RealmFeedStore: FeedStore {
     public func retrieve(completion: @escaping RetrievalCompletion) {
         if let savedCache = realm.objects(Cache.self).first {
             
-            if let cacheToLocalFeed = savedCache.localFeed {
-                completion(.found(feed: cacheToLocalFeed, timestamp: savedCache.timestamp ?? Date()))
-            } else {
-                completion(.failure(Error.invalidData))
-            }
-            
+                completion(.found(feed: savedCache.localFeed, timestamp: savedCache.timestamp ?? Date()))
         } else {
             completion(.empty)
         }
@@ -65,19 +60,15 @@ class Cache: Object {
         self.feedImage.append(objectsIn: feedImage)
     }
     
-    var localFeed: [LocalFeedImage]? {
-        var feed = [LocalFeedImage]()
-        feedImage.forEach {
-            feed.append(
+    var localFeed: [LocalFeedImage] {
+        return feedImage.map {
                 LocalFeedImage(
                     id: UUID(uuidString: $0.id ?? "") ?? UUID(),
                     description: $0.desc ?? "",
                     location: $0.location ?? "",
                     url: URL(string: $0.url ?? "")!
                 )
-            )
         }
-        return feed
     }
 }
 
