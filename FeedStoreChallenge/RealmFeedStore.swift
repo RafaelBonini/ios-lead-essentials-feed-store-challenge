@@ -13,12 +13,12 @@ public class RealmFeedStore: FeedStore {
     
     private let realm: Realm
     
-    public init(fileURLz: URL?) {
+    public init(fileURLz: URL?) throws {
         let config = Realm.Configuration(
             fileURL: fileURLz
         )
         
-        realm = try! Realm(configuration: config)
+        realm = try Realm(configuration: config)
     }
     
     private enum Error: Swift.Error {
@@ -26,9 +26,13 @@ public class RealmFeedStore: FeedStore {
     }
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        try! realm.write {
-            realm.delete(realm.objects(Cache.self))
-            completion(nil)
+        do {
+            try realm.write {
+                realm.delete(realm.objects(Cache.self))
+                completion(nil)
+            }
+        } catch {
+            completion(error)
         }
     }
     
