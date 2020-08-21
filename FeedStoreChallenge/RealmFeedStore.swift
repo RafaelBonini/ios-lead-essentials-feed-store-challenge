@@ -11,7 +11,7 @@ import RealmSwift
 
 public class RealmFeedStore: FeedStore {
     
-    let realm: Realm
+    private let realm: Realm
     
     public init(fileURLz: URL?) {
         let config = Realm.Configuration(
@@ -19,6 +19,10 @@ public class RealmFeedStore: FeedStore {
         )
         
         realm = try! Realm(configuration: config)
+    }
+    
+    private enum Error: Swift.Error {
+        case invalidData
     }
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
@@ -29,15 +33,18 @@ public class RealmFeedStore: FeedStore {
     }
     
     public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-        let realmFeed = feed.map { RealmFeedImage(localFeed: $0) }
-        let realmCache = Cache(feedImage: realmFeed, timestamp: timestamp)
-        
-        try! realm.write {
-            realm.delete(realm.objects(Cache.self))
-            realm.add(realmCache)
+        do {
+            let realmFeed = feed.map { RealmFeedImage(localFeed: $0) }
+            let realmCache = Cache(feedImage: realmFeed, timestamp: timestamp)
+            
+            try realm.write {
+                realm.delete(realm.objects(Cache.self))
+                realm.add(realmCache)
+            }
+            completion(nil)
+        } catch {
+            completion(error)
         }
-        
-        completion(nil)
     }
     
     public func retrieve(completion: @escaping RetrievalCompletion) {
@@ -51,7 +58,7 @@ public class RealmFeedStore: FeedStore {
 }
 
 class Cache: Object {
-    let feedImage = RealmSwift.List<RealmFeedImage>()
+    private let feedImage = RealmSwift.List<RealmFeedImage>()
     @objc dynamic var timestamp: Date?
     
     convenience init(feedImage: [RealmFeedImage], timestamp: Date) {
@@ -60,7 +67,7 @@ class Cache: Object {
         self.feedImage.append(objectsIn: feedImage)
     }
     
-    var localFeed: [LocalFeedImage] {
+    internal var localFeed: [LocalFeedImage] {
         return feedImage.map {
                 LocalFeedImage(
                     id: UUID(uuidString: $0.id ?? "") ?? UUID(),
@@ -73,10 +80,10 @@ class Cache: Object {
 }
 
 class RealmFeedImage: Object {
-    @objc dynamic var id: String? = ""
-    @objc dynamic var desc: String?
-    @objc dynamic var location: String?
-    @objc dynamic var url: String? = ""
+    @objc internal dynamic var id: String? = ""
+    @objc internal dynamic var desc: String?
+    @objc internal dynamic var location: String?
+    @objc internal dynamic var url: String? = ""
     
     convenience init(localFeed: LocalFeedImage) {
         self.init()
@@ -85,8 +92,4 @@ class RealmFeedImage: Object {
         location = localFeed.location
         url = localFeed.url.absoluteString
     }
-}
-
-public enum Error: Swift.Error {
-    case invalidData
 }
