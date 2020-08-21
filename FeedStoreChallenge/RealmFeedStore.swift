@@ -23,7 +23,7 @@ public class RealmFeedStore: FeedStore {
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         try! realm.write {
-            realm.deleteAll()
+            realm.delete(realm.objects(Cache.self))
             completion(nil)
         }
     }
@@ -33,7 +33,7 @@ public class RealmFeedStore: FeedStore {
         let realmCache = Cache(feedImage: realmFeed, timestamp: timestamp)
         
         try! realm.write {
-            realm.deleteAll()
+            realm.delete(realm.objects(Cache.self))
             realm.add(realmCache)
         }
         
