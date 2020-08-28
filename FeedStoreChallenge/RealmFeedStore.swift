@@ -13,12 +13,8 @@ public class RealmFeedStore: FeedStore {
     
     private let realm: Realm
     
-    public init(fileURL: URL) throws {
-        let config = Realm.Configuration(
-            fileURL: fileURL, schemaVersion: 2
-        )
-        
-        realm = try Realm(configuration: config)
+    public init() throws {
+        realm = try Realm()
     }
     
     private enum Error: Swift.Error {

@@ -4,6 +4,7 @@
 
 import XCTest
 import FeedStoreChallenge
+import RealmSwift
 
 class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
 	
@@ -18,11 +19,6 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
         setEmptyCacheState()
     }
     
-    override func tearDown() {
-        super.tearDown()
-        undoSideEffects()
-    }
-
 	func test_retrieve_deliversEmptyOnEmptyCache() {
 		let sut = makeSUT()
 
@@ -98,15 +94,12 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
 	// - MARK: Helpers
 	
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> FeedStore {
-        let sut = try! RealmFeedStore(fileURL: testSpecificStoreUrl())
+        let sut = try! RealmFeedStore()
         return sut
 	}
     
     private func setEmptyCacheState() {
-        deleteCachedArtifacts()
-    }
-    
-    private func undoSideEffects() {
+        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = self.name
         deleteCachedArtifacts()
     }
     
@@ -115,13 +108,6 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
         let exp = expectation(description: "wait completion")
         sut.deleteCachedFeed { _ in exp.fulfill()}
         wait(for: [exp], timeout: 1.0)
-    }
-    
-    private func testSpecificStoreUrl() -> URL {
-        let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
-                                                        appropriateFor: nil, create: false)
-        let url = documentDirectory.appendingPathComponent("\(type(of: self)).store")
-        return url
     }
 }
 
