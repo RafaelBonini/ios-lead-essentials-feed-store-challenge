@@ -72,14 +72,23 @@ class Cache: Object {
     }
     
     internal var localFeed: [LocalFeedImage] {
-        return feedImage.map {
-                LocalFeedImage(
-                    id: UUID(uuidString: $0.id ?? "") ?? UUID(),
-                    description: $0.desc ?? "",
-                    location: $0.location ?? "",
-                    url: URL(string: $0.url ?? "")!
+        var resultFeedImage = [LocalFeedImage]()
+        
+        feedImage.forEach {
+            if let id = $0.id, let uuid = UUID(uuidString: id),
+                let stringUrl = $0.url, let url = URL(string: stringUrl) {
+                resultFeedImage.append(
+                    LocalFeedImage(
+                        id: uuid,
+                        description: $0.desc,
+                        location: $0.location,
+                        url: url
+                    )
                 )
+            }
         }
+        
+        return resultFeedImage
     }
 }
 
