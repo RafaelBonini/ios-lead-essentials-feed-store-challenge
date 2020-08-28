@@ -123,12 +123,6 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
         let url = documentDirectory.appendingPathComponent("\(type(of: self)).store")
         return url
     }
-    
-    func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
-         addTeardownBlock { [weak instance] in
-             XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
-         }
-     }
 }
 
 //

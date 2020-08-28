@@ -15,7 +15,7 @@ public class RealmFeedStore: FeedStore {
     
     public init(fileURL: URL) throws {
         let config = Realm.Configuration(
-            fileURL: fileURL
+            fileURL: fileURL, schemaVersion: 2
         )
         
         realm = try Realm(configuration: config)
@@ -54,7 +54,7 @@ public class RealmFeedStore: FeedStore {
     public func retrieve(completion: @escaping RetrievalCompletion) {
         if let savedCache = realm.objects(Cache.self).first {
             
-                completion(.found(feed: savedCache.localFeed, timestamp: savedCache.timestamp ?? Date()))
+                completion(.found(feed: savedCache.localFeed, timestamp: savedCache.timestamp))
         } else {
             completion(.empty)
         }
@@ -63,7 +63,7 @@ public class RealmFeedStore: FeedStore {
 
 class Cache: Object {
     private let feedImage = RealmSwift.List<RealmFeedImage>()
-    @objc dynamic var timestamp: Date?
+    @objc dynamic var timestamp: Date = Date()
     
     convenience init(feedImage: [RealmFeedImage], timestamp: Date) {
         self.init()
