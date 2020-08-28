@@ -117,7 +117,7 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
         wait(for: [exp], timeout: 1.0)
     }
     
-    private func testSpecificStoreUrl() -> URL? {
+    private func testSpecificStoreUrl() -> URL {
         let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
                                                         appropriateFor: nil, create: false)
         let url = documentDirectory.appendingPathComponent("\(type(of: self)).store")

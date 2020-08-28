@@ -13,7 +13,7 @@ public class RealmFeedStore: FeedStore {
     
     private let realm: Realm
     
-    public init(fileURL: URL?) throws {
+    public init(fileURL: URL) throws {
         let config = Realm.Configuration(
             fileURL: fileURL
         )
